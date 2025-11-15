@@ -1,0 +1,14 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "cd client/frontend && npm install",
+    "build": "cd client/frontend && npm run build",
+    "dev": "cd client/frontend && npm run dev",
+    "preview": "cd client/frontend && npm run preview"
+  },
+  "description": "Network packet sniffer application",
+  "author": "",
+  "license": "ISC"
+}
