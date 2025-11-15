@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Outlet, useNavigate } from "react-router-dom"
-import io from 'socket.io-client';
+import { Link } from "react-router-dom"
 import { Stack, Button } from "@mui/material"
 import Slider from '@mui/material/Slider'
 import axios from 'axios'
@@ -34,11 +33,6 @@ const HomePage = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(getDevices, 30000); // Poll every 30 seconds
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
   const getInitialValues = (interfaces) => {
     let parameters_initial = {};
     if (localStorage.getItem('parameters')) {
@@ -57,11 +51,11 @@ const HomePage = () => {
     }
     iotProbability = parameters_initial.iot_probability;
     router_mac = parameters_initial.interface;
+    setEndSubmit(false);
     return parameters_initial;
   }
 
   const getDevices = async () => {
-    // debugger;
     setDisplaySpinner(true);
     await dispatch(fetchDevices(router_mac));
     await dispatch(fetchAnomalies());
@@ -77,7 +71,6 @@ const HomePage = () => {
       value = e.target.checked;
     }
     if (name === 'interface'){
-      // debugger;
       value = e.target.value;
       if (value !== '') {
         router_mac = value
@@ -97,7 +90,6 @@ const HomePage = () => {
     e.preventDefault();
     try {
       let response = axios.post(`http://localhost:8000/runsniffer`, parameters);
-      // debugger;
       setEndSubmit(true)
     } catch (error) {
       console.log(error.message);
@@ -126,14 +118,8 @@ const HomePage = () => {
     }
   }
 
-  const sendMessage = (msg) => {
-    if (socket && msg.trim() !== '') {
-      socket.send(msg);
-    }
-  };
-
   return (
-    <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: '1rem', height: '53rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
+    <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: 0, height: '53rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
       <div style={{width: '30rem'}}>
         <Stack spacing={1} direction="row">
             <Link to={`devices/${parameters.interface}`} >
@@ -143,10 +129,6 @@ const HomePage = () => {
         </Stack>
         <br/>
         <h2 style={{fontFamily: 'fantasy', color: 'yellow'}}>IoT Anomalies Detector</h2>
-        {/* <br/>
-        <button type="button" onClick={()=>{setRemoteIpChange(!remoteIpChange)}}>Set Remote IP</button>
-        <input type="text" id="remoteIp" name="remoteIp" value={remoteIp} onChange={(e) => setRemoteIp(e.target.value)} />
-        <br/> */}
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <div>
             { interfaces.length > 0 &&

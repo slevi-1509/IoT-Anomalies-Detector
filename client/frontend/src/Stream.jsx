@@ -21,9 +21,10 @@ function StreamComponent({ getDevices, setEndSubmit }) {
             setEndSubmit(false);
             // eventSource.close();
         }
-        if (data.data.trim() in ['AI Agent processing completed', 'Packets Agent processing completed']) {
+        if (['AI Agent processing completed', 'Packets Agent processing completed'].includes(data.data.trim())) {
             // setMessages((prevMessages) => [...prevMessages, { data: `AI Agent processing completed: ${data.details}` }]);
             // debugger;
+            setEndSubmit(false);
             getDevices();
         }
         // scrollToBottom();

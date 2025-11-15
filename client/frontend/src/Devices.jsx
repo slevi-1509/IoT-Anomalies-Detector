@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom"
 import { Stack } from "@mui/material"
 import Anomalies from './Anomalies';
 import Log from './Log';
-import { fetchDevices, setRouterMac } from './redux/devicesSlice';
+import { fetchDevices } from './redux/devicesSlice';
 import { fetchAnomalies } from './redux/anomaliesSlice';
 import './App.css'
 
@@ -17,8 +17,6 @@ const Devices = () => {
     useEffect (() => {
         const getInfo = async () => {
             if (devices == {} || Object.keys(devices).length === 0) {
-                // debugger
-                // router_mac = getInitialValues().interface;
                 dispatch(fetchDevices(router_mac));
                 dispatch(fetchAnomalies());
             }
@@ -35,7 +33,7 @@ const Devices = () => {
     }
 
     return (
-        <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: '1rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: 0, height: '53rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
             <section style={{width: '30rem'}}>
                 <Stack spacing={1} direction="row">
                     <Link to={'/'}>
@@ -75,7 +73,7 @@ const Devices = () => {
                 }
             </section>
             <section style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#383333', width: '100%', height: '50rem', padding: '0.5rem', borderRadius: '8px' }}>
-                {Object.keys(selectedDevice).length > 0 && <Log selectedDevice={selectedDevice.src_mac} />}
+                <Log selectedDevice={selectedDevice.src_mac} />
                 <Anomalies selectedDevice={selectedDevice.src_mac} />
             </section>
         </div>

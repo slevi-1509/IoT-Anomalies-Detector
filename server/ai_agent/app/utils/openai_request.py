@@ -13,6 +13,7 @@ def get_openai_response(api_key, new_devices: dict): #, data_queue: queue.Queue)
     client = OpenAI(
             api_key=api_key,
         )
+    logger.info(api_key)
     for key, value in new_devices.items():
         # Format device info into prompt
         prompt = f"""

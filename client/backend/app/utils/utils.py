@@ -10,8 +10,6 @@ import threading
 import ipaddress
 import socket
 import nmap
-# import requests
-# import ast
 import time
 import config as config
 from models.PacketSummary import PackageSummary
@@ -34,7 +32,6 @@ def start_sniffer(interface, params):
     packets_to_process = []
     send_msg(f"Starting sniffer on {interface.name} - {interface.ip}")
     # logger.info(f"Starting sniffer on interface {interface.name} with IP {interface.ip}")
-    # websocket.send_text(f"Starting sniffer on interface {interface.name} with IP {interface.ip}")
     network = ipaddress.ip_network(f"{interface.ip}/24", strict=False)
     router_mac = interface.mac.upper()
     filter = "tcp or udp or icmp"

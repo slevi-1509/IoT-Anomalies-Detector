@@ -1,7 +1,6 @@
 from confluent_kafka import Consumer
 from confluent_kafka.admin import AdminClient, NewTopic
 import logging
-import json
 import config as config
 import time
 
@@ -9,7 +8,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 KAFKA_BROKER_URL = config.KAFKA_BROKER_URL
-# print(f"KAFKA_BROKER_URL: {KAFKA_BROKER_URL}")
 KAFKA_TOPIC = 'reply_from_cloud'
 
 def send_msg(msg):
@@ -70,12 +68,4 @@ def consume_messages():
         if msg.error():
             send_msg(f"Consumer error: {msg.error()}")
             continue
-        send_msg(f"\n{msg.value().decode('utf-8')}")
-        # msg_dict = json.loads(msg.value().decode('utf-8'))
-        # config.registered_devices.update(msg_dict)
-        # with open(config.DEVICES_FILE, 'w') as file:
-        #     json.dump(config.registered_devices, file, indent=4)
-        # # update_devices_dict(msg_dict)
-        # logger.info("\nReceived response:")
-        # for device in msg_dict:
-        #     logger.info(f"Device: {device}, IP: {msg_dict[device]['src_ip']}, Is IoT: {msg_dict[device]['is_iot']}")
+        send_msg(f"{msg.value().decode('utf-8')}")

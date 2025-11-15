@@ -1,10 +1,7 @@
-from fastapi import APIRouter ,Request, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter ,Request
 from scapy import interfaces
-# from sse_starlette.sse import EventSourceResponse
 from fastapi.responses import StreamingResponse
 import asyncio
-import os
-import time
 import json
 import redis
 import config as config
@@ -15,21 +12,11 @@ from utils.utils import start_sniffer, get_devices_from_redis
 router = APIRouter()
 
 async def event_generator():
-    # counter = 0
-    prev_msg = ""
     while True:
-        # Simulate some asynchronous work or data generation
         await asyncio.sleep(1) 
-        # counter += 1
-        # message = {"data": f"{counter}"}
-        # yield f"data: {json.dumps(message)}\n\n"
-        if prev_msg != config.msg_to_client:
-            # counter += 1
+        if config.msg_to_client:
             message = {"data": f"{config.msg_to_client}"}
-            # SSE messages must be formatted as "data: <message>\n\n"
-            # You can also include an "event:" line for custom event types
             yield f"data: {json.dumps(message)}\n\n"
-            prev_msg = config.msg_to_client
             config.msg_to_client = ""
         
 @router.get("/stream")
@@ -85,6 +72,9 @@ def deleteDB(request: Request):
     r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_ANOMALIES_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
     for key in r.scan_iter("*"):
         r.delete(key)
+    config.registered_devices = {}
+    config.total_new_devices = {}
+    config.anomalies = []
     return {"status": "success", "message": "Database deleted"}
 
 @router.post("/runsniffer")
@@ -103,26 +93,3 @@ def startSniffer(params: SubmitFromUser, request: Request):
 def stopSniffer(request: Request):
     print("Stopping sniffer...")
     config.stop_sniff_flag = True
-    
-# @router.websocket("/ws/chat")
-# async def websocket_endpoint(websocket: WebSocket):
-#     await websocket.accept()
-#     try:
-#         while True:
-#             data = await websocket.receive_text()
-#             action = json.loads(data)['action']
-#             if action == "start_sniffer":
-#                 print("Starting sniffer...")
-#                 params = json.loads(data)['parameters']
-#                 found_working_interfaces = interfaces.get_working_ifaces()
-#                 for interface_item in found_working_interfaces:
-#                     if params['interface'] == interface_item.name:
-#                         interface = interface_item
-#                         break
-#                 start_sniffer(interface, params, websocket)
-#             # await websocket.send_text(f"Message text was: {data}")
-#     except WebSocketDisconnect:
-#         print("Client disconnected")
-        
-# async def send_msg(websocket):
-#     await websocket.send_text(f"Message text was: Fuck off")
