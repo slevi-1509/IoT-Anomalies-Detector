@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: .
+    image: client/backend:1.0.0
+    container_name: fastapi-backend
+    # network_mode: host
+    environment:
+      - KAFKA_BROKER_URL=kafka:29092
+      # - OPEN_AI_KEY=""
+      - REDIS_PASSWORD=rW3QFwzpiMyYqCZg
+    ports:
+      - "8000:8000"

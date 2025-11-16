@@ -5,7 +5,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchInterfaces = createAsyncThunk(
   'interfaces/fetchInterfaces',
   async () => {
-    // debugger;
     const SERVER_URL = 'http://localhost:8000';
     const res = await fetch(`${SERVER_URL}/interfaces`);
     const data = await res.json();
@@ -32,7 +31,7 @@ const interfacesSlice = createSlice({
       })
       .addCase(fetchInterfaces.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message + " interfaces.\nPlease ensure the backend server is running.";
       });
   }
 });

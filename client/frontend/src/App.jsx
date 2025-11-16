@@ -14,34 +14,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect (() => {
-      let remote_ip = '';
-      if (remoteIp === '') {
-        if (localStorage.getItem('remoteIp')) {
-          remote_ip = localStorage.getItem('remoteIp');
-          setRemoteIp(remote_ip);
-        } else {
-          remote_ip = 'localhost';
-          setRemoteIp('localhost');
-          localStorage.setItem('remoteIp', 'localhost');
-        }
-      } else {
-        remote_ip = remoteIp;
-        localStorage.setItem('remoteIp', remoteIp);
-      }
-      if (status === 'idle') {
-        dispatch(fetchInterfaces());
-        // dispatch(fetchInterfaces()); // trigger the fetch once
-      }
-    }, [status]);
+    if (status === 'idle') {
+      dispatch(fetchInterfaces());
+    }
+  }, [status]);
 
   if (status === 'loading') return <p>Loading...</p>;
-  if (status === 'failed') return <p>Failed to load items</p>;
-  
-  // APP_PORT = 3300;
-
-  // SERVER_IP = "http://localhost:";
-  // DEVICES_URL = SERVER_IP+APP_PORT+"/devices";
-  // MAIN_URL = SERVER_IP+APP_PORT+"/";
+  if (status === 'failed') return <h1 style={{color: 'red',textAlign: 'center', whiteSpace: 'pre-wrap'}}>{error}</h1>;
 
   return (
     <>
