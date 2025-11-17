@@ -6,7 +6,7 @@ services:
     # network_mode: host
     environment:
       - KAFKA_BROKER_URL=kafka:29092
-      # - OPEN_AI_KEY=""
-      - REDIS_PASSWORD=rW3QFwzpiMyYqCZg
+      - OPEN_AI_KEY=""  # Add your OpenAI key here
+      - REDIS_PASSWORD=rW3QFwzpiMyYqCZg}
     ports:
       - "8000:8000"

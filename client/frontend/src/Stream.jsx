@@ -19,6 +19,7 @@ function StreamComponent({ getDevices, setEndSubmit }) {
             // debugger;
             // setMessages((prevMessages) => [...prevMessages, { data: `Press 'Stop' button to continue !!!` }]);
             setEndSubmit(false);
+            getDevices();
             // eventSource.close();
         }
         if (['AI Agent processing completed', 'Packets Agent processing completed'].includes(data.data.trim())) {

@@ -11,6 +11,7 @@ import ipaddress
 import socket
 import nmap
 import time
+import os
 import config as config
 from models.PacketSummary import PackageSummary
 from models.NewDevice import NewDevice
@@ -26,6 +27,7 @@ packets_to_send = {}
 new_devices_sent_to_ai = {}
 router_mac = ''
 device_mac = ''
+redis_password = os.environ.get('REDIS_PASSWORD', config.REDIS_PASSWORD)
 
 def start_sniffer(interface, params):
     global router_mac
@@ -72,7 +74,7 @@ def send_msg(msg):
 
 def get_devices_from_redis(router_mac=None):
     config.registered_devices.clear()
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_DEVICES_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_DEVICES_PORT, password=redis_password, decode_responses=True)
     for key in r.keys():
         if r.hget(key, 'router_mac') == router_mac:
             config.registered_devices[key] = r.hgetall(key)

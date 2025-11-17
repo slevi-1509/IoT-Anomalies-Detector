@@ -4,12 +4,14 @@ from fastapi.responses import StreamingResponse
 import asyncio
 import json
 import redis
+import os
 import config as config
 from models.Interfaces import InterfaceClass
 from models.SubmitFromUser import SubmitFromUser
 from utils.utils import start_sniffer, get_devices_from_redis
 
 router = APIRouter()
+redis_password = os.environ.get('REDIS_PASSWORD', config.REDIS_PASSWORD)
 
 async def event_generator():
     while True:
@@ -47,7 +49,7 @@ def getDevice(request: Request, mac: str):
 
 @router.get("/anomalies")
 def getAnomalies(request: Request, response_model=list[str]):
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_ANOMALIES_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_ANOMALIES_PORT, password=redis_password, decode_responses=True)
     keys = r.scan_iter("*")  
     anomalies = []
     for key in keys:
@@ -57,19 +59,19 @@ def getAnomalies(request: Request, response_model=list[str]):
 
 @router.get("/log{mac}")
 def getDeviceLog(request: Request, mac: str, response_model=list[str]):
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_PACKETS_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_PACKETS_PORT, password=config.redis_password, decode_responses=True)
     values = [json.loads(v) for v in r.lrange(mac, 0, -1)]  # convert JSON strings to Python objects
     return values
 
 @router.get("/deletedb")
 def deleteDB(request: Request):
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_DEVICES_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_DEVICES_PORT, password=redis_password, decode_responses=True)
     for key in r.scan_iter("*"):
         r.delete(key)
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_PACKETS_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_PACKETS_PORT, password=redis_password, decode_responses=True)
     for key in r.scan_iter("*"):
         r.delete(key)
-    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_ANOMALIES_PORT, password=config.REDIS_PASSWORD, decode_responses=True)
+    r = redis.Redis(host=config.AWS_SERVER_IP, port=config.REDIS_ANOMALIES_PORT, password=redis_password, decode_responses=True)
     for key in r.scan_iter("*"):
         r.delete(key)
     config.registered_devices = {}

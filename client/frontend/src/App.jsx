@@ -20,8 +20,14 @@ function App() {
   }, [status]);
 
   if (status === 'loading') return <p>Loading...</p>;
-  if (status === 'failed') return <h1 style={{color: 'red',textAlign: 'center', whiteSpace: 'pre-wrap'}}>{error}</h1>;
-
+  if (status === 'failed') return (
+    <div style={{color: 'red',textAlign: 'center', whiteSpace: 'pre-wrap'}}>
+      <h1>{error}</h1>
+      <h3>Use the link below to pull the local backserver image.</h3>
+      <h3>Follow the instructions in the link.</h3>
+        <a href="https://hub.docker.com/r/sagivlevi1509/iot-anomalies-detector" target="_blank" rel="noopener noreferrer">Pull Local Backserver Image</a>
+    </div>
+    )
   return (
     <>
       {interfaces.length > 0 ? (

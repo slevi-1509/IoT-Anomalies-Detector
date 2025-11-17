@@ -36,7 +36,7 @@ const Devices = () => {
         <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: 0, height: '53rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
             <section style={{width: '30rem'}}>
                 <Stack spacing={1} direction="row">
-                    <Link to={'/'}>
+                    <Link to={'/'} style={{color: 'lightblue', fontSize: '1.2rem', textDecoration: 'none'}}>
                         Home
                     </Link>
                 </Stack>

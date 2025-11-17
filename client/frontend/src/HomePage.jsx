@@ -122,7 +122,7 @@ const HomePage = () => {
     <div style={{ display: 'flex', gap: '1rem', flexDirection: 'row', alignItems: 'flex-start', margin: 0, height: '53rem', backgroundColor: '#222020', padding: '0.5rem', borderRadius: '8px', minWidth: '76rem' }}>
       <div style={{width: '30rem'}}>
         <Stack spacing={1} direction="row">
-            <Link to={`devices/${parameters.interface}`} >
+            <Link to={`devices/${parameters.interface}`} style={{color: 'lightblue', fontSize: '1.2rem', textDecoration: 'none'}}>
                 More data...
             </Link>
             <button type="button" style={{ fontSize: '0.5rem', marginLeft: '10rem'}} onClick={handleDeleteDb}> Delete DB </button>
