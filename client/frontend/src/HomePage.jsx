@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom"
-import { Stack, Button } from "@mui/material"
+import { Stack } from "@mui/material"
 import Slider from '@mui/material/Slider'
 import axios from 'axios'
 import { fetchDevices, setSelectedDevice } from './redux/devicesSlice';
@@ -20,9 +20,7 @@ const HomePage = () => {
   const { devices, selectedDevice } = useSelector((state) => state.devices);
   const [parameters, setParameters] = useState({});
   const [displaySpinner, setDisplaySpinner] = useState(false);
-  const [showAConsole, setShowConsole] = useState(false);
   const [endSubmit, setEndSubmit] = useState(false);
-  const [aiReply, setAiReply] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
